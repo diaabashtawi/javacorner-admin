@@ -28,6 +28,11 @@ public class OperationUtility {
 
     public static void instructorsOperation(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao){
         createInstructors(userDao, instructorDao, roleDao);
+        updateInstructors(userDao, instructorDao, roleDao);
+    }
+
+    private static void updateInstructors(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
+
     }
 
     private static void createInstructors(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
