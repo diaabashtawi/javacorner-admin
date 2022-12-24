@@ -1,9 +1,6 @@
 package com.javacorner.admin.utility;
 
-import com.javacorner.admin.dao.InstructorDao;
-import com.javacorner.admin.dao.RoleDao;
-import com.javacorner.admin.dao.StudentDao;
-import com.javacorner.admin.dao.UserDao;
+import com.javacorner.admin.dao.*;
 import com.javacorner.admin.entiy.Instructor;
 import com.javacorner.admin.entiy.Role;
 import com.javacorner.admin.entiy.Student;
@@ -41,6 +38,25 @@ public class OperationUtility {
         updateStudent(studentDao);
         deleteStudent(studentDao);
         fetchStudent(studentDao);
+    }
+
+    public static void courseOperation(CourseDao courseDao, InstructorDao instructorDao, StudentDao studentDao){
+        createCourses(courseDao, instructorDao, studentDao);
+        updateCourse(courseDao);
+        deleteCourse(courseDao);
+        fetchCourse(courseDao);
+    }
+
+    private static void createCourses(CourseDao courseDao, InstructorDao instructorDao, StudentDao studentDao) {
+    }
+
+    private static void updateCourse(CourseDao courseDao) {
+    }
+
+    private static void deleteCourse(CourseDao courseDao) {
+    }
+
+    private static void fetchCourse(CourseDao courseDao) {
     }
 
     private static void createStudent(UserDao userDao, StudentDao studentDao, RoleDao roleDao) {
