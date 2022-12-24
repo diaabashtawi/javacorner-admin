@@ -34,27 +34,102 @@ public class OperationUtility {
 
     }
 
-    private static void fetchInstructors(InstructorDao instructorDao) {
-        instructorDao.findAll()
-                .forEach(
-                        instructor -> System.out.println(instructor.toString())
+    /* User Operation Method */
+    private static void createUsers(UserDao userDao) {
+        User user1 =
+                new User(
+                        "user1@email.com",
+                        "pass1"
                 );
-    }
+        userDao.save(user1);
 
-    private static void deleteInstructor(InstructorDao instructorDao) {
-        instructorDao.deleteById(2L);
-    }
+        User user2 =
+                new User(
+                        "user2@email.com",
+                        "pass2"
+                );
+        userDao.save(user2);
 
-    private static void updateInstructor(InstructorDao instructorDao) {
-        Instructor instructor =
-                instructorDao.findById(1L)
-                        .orElseThrow(
-                                ()-> new EntityNotFoundException("Instructor NOT FOUND")
-                        );
-        instructor.setSummary("Certified Instructor");
-        instructorDao.save(instructor);
-    }
+        User user3 =
+                new User(
+                        "user3@email.com",
+                        "pass3"
+                );
+        userDao.save(user3);
 
+        User user4 =
+                new User(
+                        "user4@email.com",
+                        "pass4"
+                );
+        userDao.save(user4);
+    }
+    private static void updateUsers(UserDao userDao) {
+        User user = userDao.findById(2L).orElseThrow(() -> new EntityNotFoundException("User NOT FOUND"));
+        user.setEmail("newEmail@gmail.com");
+        userDao.save(user);
+
+    }
+    private static void deleteUser(UserDao userDao) {
+        User user = userDao.findById(3L).orElseThrow(() -> new EntityNotFoundException("User NOT FOUND"));
+        userDao.delete(user);
+    }
+    private static void fetchUsers(UserDao userDao) {
+        userDao.findAll().forEach(
+                user -> System.out.println(user.toString())
+        );
+    }
+    /* User Operation Method */
+
+    /* Role Operation Method */
+    private static void createRoles(RoleDao roleDao) {
+        Role role1 =
+                new Role(
+                        "Admin"
+                );
+        roleDao.save(role1);
+
+        Role role2 =
+                new Role(
+                        "Instructor"
+                );
+        roleDao.save(role2);
+
+        Role role3 =
+                new Role(
+                        "Student"
+                );
+        roleDao.save(role3);
+
+    }
+    public static void assignRolesToUsers(UserDao userDao, RoleDao roleDao) {
+        Role role = roleDao.findByName("Admin");
+        if (role == null) throw new EntityNotFoundException("Role NOT FOUND");
+        List<User> users = userDao.findAll();
+        users.forEach(
+                user -> {
+                    user.assignRoleToUser(role);
+                    userDao.save(user);
+                }
+        );
+    }
+    private static void updateRoles(RoleDao roleDao) {
+        Role role =
+                roleDao.findById(1L).orElseThrow(() -> new EntityNotFoundException("Role Not Found"));
+        role.setName("NewAdmin");
+        roleDao.save(role);
+    }
+    private static void deleteRoles(RoleDao roleDao) {
+        roleDao.deleteById(2L);
+    }
+    private static void fetchRoles(RoleDao roleDao) {
+        roleDao.findAll().forEach(
+                role -> System.out.println(role.toString())
+        );
+    }
+    /* Role Operation Method */
+
+    /* Instructor Operation Method */
     private static void createInstructors(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
         Role role = roleDao.findByName("Instructor");
         if (role == null) throw new EntityNotFoundException("Role NOT FOUND");
@@ -91,104 +166,26 @@ public class OperationUtility {
         instructorDao.save(instructor2);
 
     }
-
-
-    private static void fetchUsers(UserDao userDao) {
-        userDao.findAll().forEach(
-                user -> System.out.println(user.toString())
-        );
+    private static void updateInstructor(InstructorDao instructorDao) {
+        Instructor instructor =
+                instructorDao.findById(1L)
+                        .orElseThrow(
+                                ()-> new EntityNotFoundException("Instructor NOT FOUND")
+                        );
+        instructor.setSummary("Certified Instructor");
+        instructorDao.save(instructor);
     }
-
-    private static void deleteUser(UserDao userDao) {
-        User user = userDao.findById(3L).orElseThrow(() -> new EntityNotFoundException("User NOT FOUND"));
-        userDao.delete(user);
+    private static void deleteInstructor(InstructorDao instructorDao) {
+        instructorDao.deleteById(2L);
     }
-
-    private static void updateUsers(UserDao userDao) {
-        User user = userDao.findById(2L).orElseThrow(() -> new EntityNotFoundException("User NOT FOUND"));
-        user.setEmail("newEmail@gmail.com");
-        userDao.save(user);
-
-    }
-
-    private static void createUsers(UserDao userDao) {
-        User user1 =
-                new User(
-                        "user1@email.com",
-                        "pass1"
+    private static void fetchInstructors(InstructorDao instructorDao) {
+        instructorDao.findAll()
+                .forEach(
+                        instructor -> System.out.println(instructor.toString())
                 );
-        userDao.save(user1);
-
-        User user2 =
-                new User(
-                        "user2@email.com",
-                        "pass2"
-                );
-        userDao.save(user2);
-
-        User user3 =
-                new User(
-                        "user3@email.com",
-                        "pass3"
-                );
-        userDao.save(user3);
-
-        User user4 =
-                new User(
-                        "user4@email.com",
-                        "pass4"
-                );
-        userDao.save(user4);
     }
+    /* Instructor Operation Method */
 
-    private static void fetchRoles(RoleDao roleDao) {
-        roleDao.findAll().forEach(
-                role -> System.out.println(role.toString())
-        );
-    }
 
-    private static void deleteRoles(RoleDao roleDao) {
-        roleDao.deleteById(2L);
-    }
-
-    private static void updateRoles(RoleDao roleDao) {
-        Role role =
-                roleDao.findById(1L).orElseThrow(() -> new EntityNotFoundException("Role Not Found"));
-        role.setName("NewAdmin");
-        roleDao.save(role);
-    }
-
-    private static void createRoles(RoleDao roleDao) {
-        Role role1 =
-                new Role(
-                        "Admin"
-                );
-        roleDao.save(role1);
-
-        Role role2 =
-                new Role(
-                        "Instructor"
-                );
-        roleDao.save(role2);
-
-        Role role3 =
-                new Role(
-                        "Student"
-                );
-        roleDao.save(role3);
-
-    }
-
-    public static void assignRolesToUsers(UserDao userDao, RoleDao roleDao) {
-        Role role = roleDao.findByName("Admin");
-        if (role == null) throw new EntityNotFoundException("Role NOT FOUND");
-        List<User> users = userDao.findAll();
-        users.forEach(
-                user -> {
-                    user.assignRoleToUser(role);
-                    userDao.save(user);
-                }
-        );
-    }
 
 }
