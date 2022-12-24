@@ -26,8 +26,33 @@ public class OperationUtility {
         fetchRoles(roleDao);
     }
 
-    public static void instructorsOperation(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao){
+    public static void instructorsOperation(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
         createInstructors(userDao, instructorDao, roleDao);
+        updateInstructor(instructorDao);
+        deleteInstructor(instructorDao);
+        fetchInstructors(instructorDao);
+
+    }
+
+    private static void fetchInstructors(InstructorDao instructorDao) {
+        instructorDao.findAll()
+                .forEach(
+                        instructor -> System.out.println(instructor.toString())
+                );
+    }
+
+    private static void deleteInstructor(InstructorDao instructorDao) {
+        instructorDao.deleteById(2L);
+    }
+
+    private static void updateInstructor(InstructorDao instructorDao) {
+        Instructor instructor =
+                instructorDao.findById(1L)
+                        .orElseThrow(
+                                ()-> new EntityNotFoundException("Instructor NOT FOUND")
+                        );
+        instructor.setSummary("Certified Instructor");
+        instructorDao.save(instructor);
     }
 
     private static void createInstructors(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
@@ -35,18 +60,36 @@ public class OperationUtility {
         if (role == null) throw new EntityNotFoundException("Role NOT FOUND");
         User user1 =
                 new User(
-                        "instructorUser@gmail.com",
+                        "instructorUser1@gmail.com",
                         "pass1"
                 );
         userDao.save(user1);
         user1.assignRoleToUser(role);
-        Instructor instructor =
+        Instructor instructor1 =
                 new Instructor(
                         "instructor1FN",
                         "instructor1FLN",
                         "Experienced Instructor",
                         user1
                 );
+        instructorDao.save(instructor1);
+
+        User user2 =
+                new User(
+                        "instructorUser2@gmail.com",
+                        "pass2"
+                );
+        userDao.save(user2);
+        user2.assignRoleToUser(role);
+        Instructor instructor2 =
+                new Instructor(
+                        "instructor2FN",
+                        "instructor2FLN",
+                        "Senior Instructor",
+                        user2
+                );
+        instructorDao.save(instructor2);
+
     }
 
 
