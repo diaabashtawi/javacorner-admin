@@ -2,7 +2,8 @@ package com.javacorner.admin.utility;
 
 import com.javacorner.admin.dao.*;
 import com.javacorner.admin.entiy.*;
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.*;
 
 import java.util.List;
 import java.util.Optional;

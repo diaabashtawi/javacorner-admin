@@ -1,6 +1,6 @@
 package com.javacorner.admin.entiy;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,7 +10,8 @@ import java.util.Set;
 @Table(
         name = "instructors"
 )
-public class Instructor {
+
+public class Instructor  {
 
     @Id
     @GeneratedValue(
