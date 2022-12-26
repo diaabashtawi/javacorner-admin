@@ -1,6 +1,7 @@
 package com.javacorner.admin;
 
 import com.javacorner.admin.dao.*;
+import com.javacorner.admin.utility.OperationUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +29,10 @@ public class JavacornerAdminApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        /*OperationUtility.usersOperations(userDao);
+        OperationUtility.rolesOperations(roleDao);
+        OperationUtility.assignRolesToUsers(userDao, roleDao);*/
+        OperationUtility.instructorsOperation(userDao, instructorDao, roleDao);
 
     }
 }

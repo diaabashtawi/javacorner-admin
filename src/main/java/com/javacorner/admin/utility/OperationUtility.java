@@ -12,22 +12,22 @@ public class OperationUtility {
 
     public static void usersOperations(UserDao userDao) {
         createUsers(userDao);
-        updateUsers(userDao);
+        /*updateUsers(userDao);
         deleteUser(userDao);
-        fetchUsers(userDao);
+        fetchUsers(userDao);*/
     }
 
     public static void rolesOperations(RoleDao roleDao) {
         createRoles(roleDao);
-        updateRoles(roleDao);
+        /*updateRoles(roleDao);
         deleteRoles(roleDao);
-        fetchRoles(roleDao);
+        fetchRoles(roleDao);*/
     }
 
     public static void instructorsOperation(UserDao userDao, InstructorDao instructorDao, RoleDao roleDao) {
-        createInstructors(userDao, instructorDao, roleDao);
+        /*createInstructors(userDao, instructorDao, roleDao);
         updateInstructor(instructorDao);
-        deleteInstructor(instructorDao);
+        deleteInstructor(instructorDao);*/
         fetchInstructors(instructorDao);
 
     }
@@ -248,8 +248,8 @@ public class OperationUtility {
                         "instructorUser1@gmail.com",
                         "pass1"
                 );
-        userDao.save(user1);
         user1.assignRoleToUser(role);
+        userDao.save(user1);
         Instructor instructor1 =
                 new Instructor(
                         "instructor1FN",
@@ -264,8 +264,8 @@ public class OperationUtility {
                         "instructorUser2@gmail.com",
                         "pass2"
                 );
-        userDao.save(user2);
         user2.assignRoleToUser(role);
+        userDao.save(user2);
         Instructor instructor2 =
                 new Instructor(
                         "instructor2FN",
