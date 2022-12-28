@@ -33,10 +33,10 @@ public class OperationUtility {
     }
 
     public static void studentOperation(UserDao userDao, StudentDao studentDao, RoleDao roleDao) {
-        createStudent(userDao, studentDao, roleDao);
+        /*createStudent(userDao, studentDao, roleDao);*/
         updateStudent(studentDao);
-        deleteStudent(studentDao);
-        fetchStudent(studentDao);
+        /*deleteStudent(studentDao);
+        fetchStudent(studentDao);*/
     }
 
     public static void courseOperation(CourseDao courseDao, InstructorDao instructorDao, StudentDao studentDao) {
