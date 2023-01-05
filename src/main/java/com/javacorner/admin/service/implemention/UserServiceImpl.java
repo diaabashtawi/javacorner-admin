@@ -5,7 +5,11 @@ import com.javacorner.admin.dao.UserDao;
 import com.javacorner.admin.entiy.Role;
 import com.javacorner.admin.entiy.User;
 import com.javacorner.admin.service.UserService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserDao userDao;

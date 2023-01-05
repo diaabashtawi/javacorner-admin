@@ -7,9 +7,9 @@ import com.javacorner.admin.entiy.User;
 import com.javacorner.admin.service.StudentService;
 import com.javacorner.admin.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.Iterator;
 import java.util.List;
 

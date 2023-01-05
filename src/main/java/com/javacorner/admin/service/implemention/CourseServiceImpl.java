@@ -8,9 +8,9 @@ import com.javacorner.admin.entiy.Instructor;
 import com.javacorner.admin.entiy.Student;
 import com.javacorner.admin.service.CourseService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

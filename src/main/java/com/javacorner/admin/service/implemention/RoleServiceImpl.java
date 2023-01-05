@@ -4,9 +4,7 @@ import com.javacorner.admin.dao.RoleDao;
 import com.javacorner.admin.entiy.Role;
 import com.javacorner.admin.service.RoleService;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-
+import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
