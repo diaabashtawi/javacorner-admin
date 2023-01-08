@@ -1,8 +1,7 @@
 package com.javacorner.admin;
 
 import com.javacorner.admin.dao.*;
-import com.javacorner.admin.entiy.Role;
-import com.javacorner.admin.entiy.User;
+import com.javacorner.admin.entiy.*;
 import com.javacorner.admin.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,18 +15,6 @@ public class JavacornerAdminApplication {
     public static final String ADMIN = "Admin";
     public static final String INSTRUCTOR = "Instructor";
     public static final String STUDENT = "Student";
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private RoleDao roleDao;
-    @Autowired
-    private CourseDao courseDao;
-
-    @Autowired
-    private StudentDao studentDao;
-
-    @Autowired
-    private InstructorDao instructorDao;
 
     public static void main(String[] args) {
         SpringApplication.run(JavacornerAdminApplication.class, args);
@@ -35,12 +22,12 @@ public class JavacornerAdminApplication {
 
     @Bean
     CommandLineRunner start(UserService userService, RoleService roleService,
-                            StudentService service, InstructorService instructorService,
-                            CourseService courseService){
+                            StudentService studentService, InstructorService instructorService,
+                            CourseService courseService) {
 
         return args -> {
-          User user1 = userService.createUser("user1@gmail.com","pass1");
-          User user2 = userService.createUser("user2@gmail.com","pass2");
+            User user1 = userService.createUser("user1@gmail.com", "pass1");
+            User user2 = userService.createUser("user2@gmail.com", "pass2");
 
             roleService.createRole(ADMIN);
             roleService.createRole(INSTRUCTOR);
@@ -49,6 +36,63 @@ public class JavacornerAdminApplication {
             userService.assignRoleToUser(user1.getEmail(), ADMIN);
             userService.assignRoleToUser(user1.getEmail(), INSTRUCTOR);
             userService.assignRoleToUser(user2.getEmail(), STUDENT);
+
+            Instructor instructor1 =
+                    instructorService.createInstructor(
+                            "instructor1FN",
+                            "instructor1LN",
+                            "Experienced Instructor",
+                            "instructorUser1@gmail.com",
+                            "pass1"
+                    );
+
+            Instructor instructor2 =
+                    instructorService.createInstructor(
+                            "instructor2FN",
+                            "instructor2LN",
+                            "Senior Instructor",
+                            "instructorUser2@gmail.com",
+                            "pass2"
+                    );
+
+            Student student1 =
+                    studentService.createStudent(
+                            "std1FN",
+                            "std1LN",
+                            "beginner",
+                            "stdUser1@gmail.com",
+                            "pass1"
+                    );
+
+            Student student2 =
+                    studentService.createStudent(
+                            "std2FN",
+                            "std2LN",
+                            "Master degree",
+                            "stdUser2@gmail.com",
+                            "pass2"
+                    );
+
+            Course course1 =
+                    courseService.createCourse(
+                            "Spring Service",
+                            "2 Hours",
+                            "Master Spring Service",
+                            instructor1.getInstructorId()
+                    );
+
+            Course course2 =
+                    courseService.createCourse(
+                            "Spring Data JPA",
+                            "4 Hours",
+                            "Introduction to JPA",
+                            instructor2.getInstructorId()
+                    );
+
+            courseService.assignStudentToCourse(course1.getCourseId(), student1.getStudentId());
+            courseService.assignStudentToCourse(course2.getCourseId(), student2.getStudentId());
+
+
 
         };
     }
