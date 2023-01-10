@@ -1,4 +1,4 @@
-package com.javacorner.admin.service.implemention;
+package com.javacorner.admin.service.implementation;
 
 import com.javacorner.admin.dao.StudentDao;
 import com.javacorner.admin.entiy.Course;

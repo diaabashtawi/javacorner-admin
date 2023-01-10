@@ -1,4 +1,4 @@
-package com.javacorner.admin.service.implemention;
+package com.javacorner.admin.service.implementation;
 
 import com.javacorner.admin.dao.RoleDao;
 import com.javacorner.admin.entiy.Role;
