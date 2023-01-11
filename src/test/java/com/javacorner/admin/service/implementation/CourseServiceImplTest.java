@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +35,11 @@ class CourseServiceImplTest {
 
         assertEquals(course, actualCourse);
 
+    }
 
+    @Test
+    void testExceptionForNotFoundCourseById(){
+        assertThrows(EntityNotFoundException.class, ()->courseService.loadCourseById(2L));
     }
 
     @Test
