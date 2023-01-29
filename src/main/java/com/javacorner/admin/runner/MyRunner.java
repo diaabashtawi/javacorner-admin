@@ -27,8 +27,6 @@ public class MyRunner implements CommandLineRunner {
     public static final String INSTRUCTOR = "Instructor";
     public static final String STUDENT = "Student";
 
-
-
     @Override
     public void run(String... args) throws Exception {
 
