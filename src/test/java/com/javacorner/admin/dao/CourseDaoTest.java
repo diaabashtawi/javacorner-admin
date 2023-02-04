@@ -33,5 +33,9 @@ class CourseDaoTest extends AbstractTest {
 
     @Test
     void testGetCourseByStudentId() {
+        List<Course> courses = courseDao.getCourseByStudentId(1L);
+        int expectedResult = 1;
+        assertEquals(expectedResult, courses.size());
+
     }
 }
