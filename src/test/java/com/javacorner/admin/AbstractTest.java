@@ -7,7 +7,8 @@ import org.testcontainers.containers.MySQLContainer;
 
 public class AbstractTest {
 
-    private static MySQLContainer mySQLContainer = new MySQLContainer<>("mysql:latest");
+    private static MySQLContainer mySQLContainer = new MySQLContainer<>("mysql:latest")
+            .withReuse(true);
 
     @DynamicPropertySource
     public static void overrideProps(DynamicPropertyRegistry registry){
