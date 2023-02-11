@@ -5,7 +5,7 @@ import com.bakheet.entiy.Instructor;
 import com.bakheet.entiy.Student;
 import com.bakheet.entiy.User;
 import com.bakheet.service.*;
-import com.javacorner.admin.service.*;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

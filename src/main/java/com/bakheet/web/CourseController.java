@@ -26,14 +26,22 @@ public class CourseController {
     @GetMapping(
             value = "/index"
     )
+    public String showCoursPage(){
+        return "course-views/demo";
+    }
+
+
+    @GetMapping(
+            value = "/list"
+    )
     public String viewCourses(
             Model model,
-            @RequestParam(name = "courses", defaultValue = "") String course){
+            @RequestParam(name = "keyword", defaultValue = "") String keyword){
 
-        List<Course> courseList = courseService.findCoursesByCourseName(course);
+        List<Course> courses = courseService.findCoursesByCourseName(keyword);
 
-        model.addAttribute("listCourses", courseList);
-        model.addAttribute("course", course);
+        model.addAttribute("listCourses", courses);
+        model.addAttribute("keyword", keyword);
 
         return "course-views/courses";
 
