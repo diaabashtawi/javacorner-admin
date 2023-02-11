@@ -38,6 +38,20 @@
                             <td th:text="${course.getCourseDescription()}"></td>
                             <td th:text="${course.getInstructor().getFirstName()} + ' ' + ${course.getInstructor().getLastName()}"></td>
                             <td th:text="${course.getStudents().size()}"></td>
+                            <td>
+                                <a href=""></a>
+                            </td>
+                            <td>
+                                <a class="btn bg-danger" th:href="@{/courses/delete(courseId=${course.getCourseId()}, keyword=${keyword})}"
+                                   onclick="return confirm('Are you sure')">
+                                    Delete
+                                </a>
+                            </td>
+                            <td>
+                                <a class="btn bg-success" th:href="@{/courses/update(courseId=${course.getCourseId()})}">
+                                    Update
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
