@@ -79,4 +79,15 @@ public class CourseController {
         courseService.createOrUpdateCourse(course);
         return "redirect:/courses/list";
     }
+
+    @GetMapping(
+            value = "/create"
+    )
+    public String createCourse(Model model){
+        List<Instructor> instructors = instructorService.fetchInstructor();
+        model.addAttribute("listInstructor", instructors);
+        model.addAttribute("course", new Course());
+
+        return "course-views/create";
+    }
 }
