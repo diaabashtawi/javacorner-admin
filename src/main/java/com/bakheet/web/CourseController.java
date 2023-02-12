@@ -8,6 +8,7 @@ import com.bakheet.service.InstructorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -69,5 +70,13 @@ public class CourseController {
         model.addAttribute("course", course);
         model.addAttribute("listInstructor", instructors);
         return "course-views/update";
+    }
+
+    @PostMapping(
+            value = "/edit"
+    )
+    public String saveCourse(Course course){
+        courseService.createOrUpdateCourse(course);
+        return "redirect:/courses/list";
     }
 }
