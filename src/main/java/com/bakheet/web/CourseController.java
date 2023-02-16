@@ -90,4 +90,16 @@ public class CourseController {
 
         return "course-views/create";
     }
+
+    @GetMapping(
+            value = "/list/student"
+    )
+    public String couresForCurrentStudent(Model model){
+        Long studentId = 1L;// current student
+        List<Course> subscribedCourses = courseService.fetchCoursesForStudent(studentId);
+        model.addAttribute("listCourses", subscribedCourses);
+
+        return "course-views/student_courses";
+
+    }
 }
