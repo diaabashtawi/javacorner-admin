@@ -31,14 +31,6 @@ public class CourseController {
     }
 
     @GetMapping(
-            value = "/index"
-    )
-    public String showCoursPage(){
-        return "course-views/demo";
-    }
-
-
-    @GetMapping(
             value = "/list"
     )
     public String viewCourses(
@@ -50,7 +42,7 @@ public class CourseController {
         model.addAttribute("listCourses", courses);
         model.addAttribute("keyword", keyword);
 
-        return "course-views/courses";
+        return "course_views/courses";
     }
 
     @GetMapping(
@@ -70,7 +62,7 @@ public class CourseController {
 
         model.addAttribute("course", course);
         model.addAttribute("listInstructor", instructors);
-        return "course-views/update";
+        return "course_views/update";
     }
 
     @PostMapping(
@@ -89,7 +81,7 @@ public class CourseController {
         model.addAttribute("listInstructor", instructors);
         model.addAttribute("course", new Course());
 
-        return "course-views/create";
+        return "course_views/create";
     }
 
     @GetMapping(
@@ -105,7 +97,7 @@ public class CourseController {
         model.addAttribute("listCourses", subscribedCourses);
         model.addAttribute("otherCourses", otherCourses);
 
-        return "course-views/student_courses";
+        return "course_views/student_courses";
     }
 
     @GetMapping(
@@ -115,5 +107,27 @@ public class CourseController {
         Long studentId = 1L;
         courseService.assignStudentToCourse(courseId, studentId);
         return "redirect:/courses/list/student";
+    }
+
+    @GetMapping(
+            value = "/list/instructor"
+    )
+    public String coursesForCurrentInstructor(Model model){
+        Long instructorId = 1L;
+        Instructor instructor = instructorService.loadInstructorById(instructorId);
+        model.addAttribute("listCourses", instructor.getCourses());
+
+        return "course_views/instrucor_courses";
+    }
+
+    @GetMapping(
+            value = "/instructor"
+    )
+    public String coursesByInstructorId(Model model, Long instructorId){
+
+        Instructor instructor = instructorService.loadInstructorById(instructorId);
+        model.addAttribute("listCourses", instructor.getCourses());
+
+        return "course_views/instrucor_courses";
     }
 }
