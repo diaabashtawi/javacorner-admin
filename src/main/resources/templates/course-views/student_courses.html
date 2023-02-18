@@ -36,6 +36,39 @@
             </table>
         </div>
     </div>
+
+    <div class="card mt-3">
+        <div class="card-header">
+            Enrolled in new Courses:
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr class="text-center">
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                    <th>Course Durartion</th>
+                    <th>Course Description</th>
+                    <th>Instructor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="text-center" th:each="course:${otherCourses}">
+                    <td th:text="${course.getCourseId()}"></td>
+                    <td th:text="${course.getCourseName()}"></td>
+                    <td th:text="${course.getCourseDuration()}"></td>
+                    <td th:text="${course.getCourseDescription()}"></td>
+                    <td th:text="${course.getInstructor().getFirstName()} + ' ' + ${course.getInstructor().getLastName()}"></td>
+                    <td>
+                        <a class="btn btn-info" th:href="@{/courses/enrollStudent(courseId=${course.getCourseId()})}">
+                            Enrolle In
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 

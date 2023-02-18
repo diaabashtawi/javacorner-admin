@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(
@@ -95,11 +96,24 @@ public class CourseController {
             value = "/list/student"
     )
     public String couresForCurrentStudent(Model model){
+
         Long studentId = 1L;// current student
         List<Course> subscribedCourses = courseService.fetchCoursesForStudent(studentId);
+        List<Course> otherCourses = courseService.fetchAllCourses().stream()
+                .filter(course -> !subscribedCourses.contains(course))
+                .collect(Collectors.toList());
         model.addAttribute("listCourses", subscribedCourses);
+        model.addAttribute("otherCourses", otherCourses);
 
         return "course-views/student_courses";
+    }
 
+    @GetMapping(
+            value = "/enrollStudent"
+    )
+    public String enrollCurrentStudentInCourse(Long courseId){
+        Long studentId = 1L;
+        courseService.assignStudentToCourse(courseId, studentId);
+        return "redirect:/courses/list/student";
     }
 }
