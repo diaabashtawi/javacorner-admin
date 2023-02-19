@@ -1,4 +1,4 @@
-package com.bakheet.web;
+package com.bakheet.controller;
 
 
 import com.bakheet.entiy.Course;

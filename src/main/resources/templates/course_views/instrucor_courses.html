@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">
 <head>
     <meta charset="UTF-8">
     <title>Instructor Courses</title>
@@ -7,44 +7,45 @@
 </head>
 <body>
 
-
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            These are your Course:
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr class="text-center">
-                    <th>Course ID</th>
-                    <th>Course Name</th>
-                    <th>Course Durartion</th>
-                    <th>Course Description</th>
-                    <th>Instructor</th>
-                    <th>Number of Participants</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="text-center" th:each="course:${listCourses}">
-                    <td th:text="${course.getCourseId()}"></td>
-                    <td th:text="${course.getCourseName()}"></td>
-                    <td th:text="${course.getCourseDuration()}"></td>
-                    <td th:text="${course.getCourseDescription()}"></td>
-                    <td th:text="${course.getInstructor().getFirstName()} + ' ' + ${course.getInstructor().getLastName()}"></td>
-                    <td th:text="${course.getStudents().size()}"></td>
-                    <td>
-                        <a class="btn btn-success" th:href="@{/courses/formUpdate(courseId=${course.getCourseId()})}">
-                            Update
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<div layout:fragment="content1">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                These are your Course:
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr class="text-center">
+                        <th>Course ID</th>
+                        <th>Course Name</th>
+                        <th>Course Durartion</th>
+                        <th>Course Description</th>
+                        <th>Instructor</th>
+                        <th>Number of Participants</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="text-center" th:each="course:${listCourses}">
+                        <td th:text="${course.getCourseId()}"></td>
+                        <td th:text="${course.getCourseName()}"></td>
+                        <td th:text="${course.getCourseDuration()}"></td>
+                        <td th:text="${course.getCourseDescription()}"></td>
+                        <td th:text="${course.getInstructor().getFirstName()} + ' ' + ${course.getInstructor().getLastName()}"></td>
+                        <td th:text="${course.getStudents().size()}"></td>
+                        <td>
+                            <a class="btn btn-success"
+                               th:href="@{/courses/formUpdate(courseId=${course.getCourseId()})}">
+                                Update
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
 
 </body>
 </html>

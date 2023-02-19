@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">
 <head>
     <meta charset="UTF-8">
     <title>Update Course</title>
@@ -7,39 +7,44 @@
 </head>
 <body>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-3 mt-3">
-            <form class="form-control" method="post" th:action="@{edit}">
-                <div class="mb-3 mt-3">
-                    <label class="form-label" for="courseName">Course Name : </label>
-                    <input class="form-control" type="text" id="courseName" name="courseName"
-                           th:field="${course.courseName}">
-                </div>
-                <div class="mb-3 mt-3">
-                    <label class="form-label" for="courseDurarion">Course Duration : </label>
-                    <input class="form-control" type="text" id="courseDurarion" name="courseDuration"
-                           th:field="${course.courseDuration}">
-                </div>
-                <div class="mb-3 mt-3">
-                    <label class="form-label" for="courseDescription">Course Description : </label>
-                    <input class="form-control" type="text" id="courseDescription" name="courseDescription"
-                           th:field="${course.courseDescription}">
-                </div>
-                <div class="mb-3 mt-3">
-                    <label class="form-label">Insrtructor : </label>
-                    <select class="form-select" id="instructor" name="instructor" th:field="${course.instructor}">
-                        <option th:each="instructor : ${listInstructor}"
-                                th:text="${instructor.getFirstName()} + ${instructor.getLastName()}"
-                                th:value="${instructor.getInstructorId()}">
-                        </option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" type="submit">Create</button>
-            </form>
+
+<div layout:fragment="content1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-3 mt-3">
+                <form class="form-control" method="post" th:action="@{edit}">
+                    <div class="mb-3 mt-3">
+                        <label class="form-label" for="courseName">Course Name : </label>
+                        <input class="form-control" type="text" id="courseName" name="courseName"
+                               th:field="${course.courseName}">
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label class="form-label" for="courseDurarion">Course Duration : </label>
+                        <input class="form-control" type="text" id="courseDurarion" name="courseDuration"
+                               th:field="${course.courseDuration}">
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label class="form-label" for="courseDescription">Course Description : </label>
+                        <input class="form-control" type="text" id="courseDescription" name="courseDescription"
+                               th:field="${course.courseDescription}">
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">Insrtructor : </label>
+                        <select class="form-select" id="instructor" name="instructor" th:field="${course.instructor}">
+                            <option th:each="instructor : ${listInstructor}"
+                                    th:text="${instructor.getFirstName()} + ${instructor.getLastName()}"
+                                    th:value="${instructor.getInstructorId()}">
+                            </option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Create</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 </body>
 </html>
