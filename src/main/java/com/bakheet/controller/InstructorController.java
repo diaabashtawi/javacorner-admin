@@ -32,4 +32,21 @@ public class InstructorController {
         model.addAttribute("keyword", keyword);
         return "instructor_views/instructor";
     }
+
+    @GetMapping(
+            value = "/delete"
+    )
+    public String deleteInstructor(Long instructorId, String keyword){
+        instructorService.deleteInstructor(instructorId);
+        return "redirect:/instructor/list";
+    }
+
+    @GetMapping(
+            value = "/update"
+    )
+    public String updateInstructor(Model model, Long instructorId){
+        Instructor instructor = instructorService.loadInstructorById(instructorId);
+        model.addAttribute("instructor", instructor);
+        return "instructor_views/update";
+    }
 }

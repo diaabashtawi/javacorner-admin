@@ -35,7 +35,21 @@
                     <td th:text="${instructor.getFirstName()}"></td>
                     <td th:text="${instructor.getFirstName()}"></td>
                     <td th:text="${instructor.getSummary()}"></td>
+                    <td>
+                        <a class="btn bg-danger"
+                           th:href="@{/instructor/delete(instructorId=${instructor.getInstructorId()}, keyword=${keyword})}"
+                           onclick="return confirm('Are you sure')">
+                            Delete
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn bg-success"
+                           th:href="@{/instructor/update(instructorId=${instructor.getInstructorId()})}">
+                            Update
+                        </a>
+                    </td>
                 </tr>
+
                 </tbody>
             </table>
         </div>
