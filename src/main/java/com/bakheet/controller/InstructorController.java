@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+import static com.bakheet.constants.AppConstants.*;
+
 @Controller
 @RequestMapping(
         value = "/instructor"
@@ -34,10 +36,10 @@ public class InstructorController {
     @GetMapping(
             value = "/list"
     )
-    public String instructorsList(Model model, @RequestParam(name = "keyword", defaultValue = "") String keyword) {
+    public String instructorsList(Model model, @RequestParam(name = KEYWORD, defaultValue = "") String keyword) {
         List<Instructor> instructors = instructorService.findInstructorByName(keyword);
-        model.addAttribute("listInstructors", instructors);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute(LIST_INSTRUCTORS, instructors);
+        model.addAttribute(KEYWORD, keyword);
         return "instructor_views/instructor";
     }
 
@@ -54,7 +56,7 @@ public class InstructorController {
     )
     public String updateInstructor(Model model, Long instructorId) {
         Instructor instructor = instructorService.loadInstructorById(instructorId);
-        model.addAttribute("instructor", instructor);
+        model.addAttribute(INSTRUCTOR, instructor);
         return "instructor_views/update";
     }
 
@@ -70,7 +72,7 @@ public class InstructorController {
             value = "/create"
     )
     public String createInstructor(Model model) {
-        model.addAttribute("instructor", new Instructor());
+        model.addAttribute(INSTRUCTOR, new Instructor());
         return "instructor_views/create";
     }
 

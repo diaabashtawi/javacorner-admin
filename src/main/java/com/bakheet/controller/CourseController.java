@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.bakheet.constants.AppConstants.*;
+
 @Controller
 @RequestMapping(
         value = "/courses"
@@ -35,12 +37,12 @@ public class CourseController {
     )
     public String viewCourses(
             Model model,
-            @RequestParam(name = "keyword", defaultValue = "") String keyword){
+            @RequestParam(name = KEYWORD, defaultValue = "") String keyword){
 
         List<Course> courses = courseService.findCoursesByCourseName(keyword);
 
-        model.addAttribute("listCourses", courses);
-        model.addAttribute("keyword", keyword);
+        model.addAttribute(LIST_COURSES, courses);
+        model.addAttribute(KEYWORD, keyword);
 
         return "course_views/courses";
     }
@@ -60,8 +62,8 @@ public class CourseController {
         Course course = courseService.loadCourseById(courseId);
         List<Instructor> instructors = instructorService.fetchInstructor();
 
-        model.addAttribute("course", course);
-        model.addAttribute("listInstructor", instructors);
+        model.addAttribute(COURSE, course);
+        model.addAttribute(LIST_INSTRUCTORS, instructors);
         return "course_views/update";
     }
 
@@ -78,8 +80,8 @@ public class CourseController {
     )
     public String createCourse(Model model){
         List<Instructor> instructors = instructorService.fetchInstructor();
-        model.addAttribute("listInstructor", instructors);
-        model.addAttribute("course", new Course());
+        model.addAttribute(LIST_INSTRUCTORS, instructors);
+        model.addAttribute(COURSE, new Course());
 
         return "course_views/create";
     }
@@ -94,8 +96,8 @@ public class CourseController {
         List<Course> otherCourses = courseService.fetchAllCourses().stream()
                 .filter(course -> !subscribedCourses.contains(course))
                 .collect(Collectors.toList());
-        model.addAttribute("listCourses", subscribedCourses);
-        model.addAttribute("otherCourses", otherCourses);
+        model.addAttribute(LIST_COURSES, subscribedCourses);
+        model.addAttribute(OTHER_COURSES, otherCourses);
 
         return "course_views/student_courses";
     }
@@ -115,7 +117,7 @@ public class CourseController {
     public String coursesForCurrentInstructor(Model model){
         Long instructorId = 1L;
         Instructor instructor = instructorService.loadInstructorById(instructorId);
-        model.addAttribute("listCourses", instructor.getCourses());
+        model.addAttribute(LIST_COURSES, instructor.getCourses());
 
         return "course_views/instrucor_courses";
     }
@@ -126,7 +128,7 @@ public class CourseController {
     public String coursesByInstructorId(Model model, Long instructorId){
 
         Instructor instructor = instructorService.loadInstructorById(instructorId);
-        model.addAttribute("listCourses", instructor.getCourses());
+        model.addAttribute(LIST_COURSES, instructor.getCourses());
 
         return "course_views/instrucor_courses";
     }
