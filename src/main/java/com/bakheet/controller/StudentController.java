@@ -5,6 +5,7 @@ import com.bakheet.service.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -44,9 +45,20 @@ public class StudentController {
         return "redirect:/student/list?keyword=" + keyword;
     }
 
+    @GetMapping(
+            value = "/update"
+    )
     public String updateStudent(Model model, Long studentId){
         Student student = studentService.loadStudentById(studentId);
         model.addAttribute("student", student);
         return "student_views/update";
+    }
+
+    @PostMapping(
+            value = "/edit"
+    )
+    public String editStudent(Student student){
+        studentService.updateStudent(student);
+        return "redirect:/student/list";
     }
 }
