@@ -5,6 +5,7 @@ import com.bakheet.entiy.Instructor;
 import com.bakheet.entiy.User;
 import com.bakheet.service.InstructorService;
 import com.bakheet.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 import static com.bakheet.constants.AppConstants.*;
@@ -36,6 +38,7 @@ public class InstructorController {
     @GetMapping(
             value = "/list"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String instructorsList(Model model, @RequestParam(name = KEYWORD, defaultValue = "") String keyword) {
         List<Instructor> instructors = instructorService.findInstructorByName(keyword);
         model.addAttribute(LIST_INSTRUCTORS, instructors);
@@ -46,6 +49,7 @@ public class InstructorController {
     @GetMapping(
             value = "/delete"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String deleteInstructor(Long instructorId, String keyword) {
         instructorService.deleteInstructor(instructorId);
         return "redirect:/instructor/list";
@@ -54,8 +58,9 @@ public class InstructorController {
     @GetMapping(
             value = "/update"
     )
-    public String updateInstructor(Model model, Long instructorId) {
-        Instructor instructor = instructorService.loadInstructorById(instructorId);
+    @PreAuthorize("hasAuthority('Instructor')")
+    public String updateInstructor(Model model, Long instructorId, Principal principal) {
+        Instructor instructor = instructorService.loadInstructorByEmail(principal.getName());
         model.addAttribute(INSTRUCTOR, instructor);
         return "instructor_views/update";
     }
@@ -63,14 +68,16 @@ public class InstructorController {
     @PostMapping(
             value = "/edit"
     )
+    @PreAuthorize("hasAuthority('Instructor')")
     public String editInstructor(Instructor instructor) {
         instructorService.updateInstructor(instructor);
-        return "redirect:/instructor/list";
+        return "redirect:/courses/list/instructor";
     }
 
     @GetMapping(
             value = "/create"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String createInstructor(Model model) {
         model.addAttribute(INSTRUCTOR, new Instructor());
         return "instructor_views/create";
@@ -79,6 +86,7 @@ public class InstructorController {
     @PostMapping(
             value = "/save"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String saveInstructor(@Validated Instructor instructor, BindingResult bindingResult) {
         User user = userService.loadUserByEmail(instructor.getUser().getEmail());
         if (user != null) {
