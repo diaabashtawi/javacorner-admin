@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="template">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" layout:decorate="template">
 <head>
     <meta charset="UTF-8">
     <title>Update Course</title>
@@ -29,12 +30,18 @@
                                th:field="${course.courseDescription}">
                     </div>
                     <div class="mb-3 mt-3">
-                        <label class="form-label">Insrtructor : </label>
-                        <select class="form-select" id="instructor" name="instructor" th:field="${course.instructor}">
-                            <option th:each="instructor : ${listInstructor}"
-                                    th:text="${instructor.getFirstName()} + ${instructor.getLastName()}"
-                                    th:value="${instructor.getInstructorId()}">
-                            </option>
+                        <label class="form-label">Instructor:</label>
+                        <select sec:authorize="hasAuthority('Admin')" th:field="${course.instructor}" name="instructor"
+                                class="form-select">
+                            <option th:each="instructor:${listInstructors}"
+                                    th:text="${instructor.getFirstName()}+' '+${instructor.getLastName()}"
+                                    th:value="${instructor.getInstructorId()}"></option>
+                        </select>
+                        <select sec:authorize="!hasAuthority('Admin') && hasAuthority('Instructor')"
+                                th:field="${course.instructor}" name="instructor" class="form-select">
+                            <option selected
+                                    th:text="${currentInstructor.getFirstName()}+' '+${currentInstructor.getLastName()}"
+                                    th:value="${currentInstructor.getInstructorId()}"></option>
                         </select>
                     </div>
                     <button class="btn btn-primary" type="submit">Create</button>

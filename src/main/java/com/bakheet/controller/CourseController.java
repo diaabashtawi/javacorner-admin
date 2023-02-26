@@ -45,7 +45,7 @@ public class CourseController {
     @PreAuthorize("hasAuthority('Admin')")
     public String viewCourses(
             Model model,
-            @RequestParam(name = KEYWORD, defaultValue = "") String keyword){
+            @RequestParam(name = KEYWORD, defaultValue = "") String keyword) {
 
         List<Course> courses = courseService.findCoursesByCourseName(keyword);
 
@@ -59,7 +59,7 @@ public class CourseController {
             value = "/delete"
     )
     @PreAuthorize("hasAuthority('Admin')")
-    public String deleteCourse(Long courseId, String keyword){
+    public String deleteCourse(Long courseId, String keyword) {
         courseService.removeCourse(courseId);
         return "redirect:/courses/list?keyword=" + keyword;
     }
@@ -68,9 +68,9 @@ public class CourseController {
             value = "/update"
     )
     @PreAuthorize("hasAnyAuthority('Admin','Instructor')")
-    public String updateCourse(Model model, Long courseId, Principal principal){
+    public String updateCourse(Model model, Long courseId, Principal principal) {
 
-        if (userService.doseCurrentUserHasRole("Instructor")){
+        if (userService.doseCurrentUserHasRole("Instructor")) {
             Instructor instructor =
                     instructorService.loadInstructorByEmail(principal.getName());
             model.addAttribute(CURRENT_INSTRUCTOR, instructor);
@@ -89,7 +89,7 @@ public class CourseController {
             value = "/edit"
     )
     @PreAuthorize("hasAnyAuthority('Admin','Instructor')")
-    public String saveCourse(Course course){
+    public String saveCourse(Course course) {
         courseService.createOrUpdateCourse(course);
         return userService.doseCurrentUserHasRole("Instructor") ? "redirect:/courses/list/instructor" : "redirect:/courses/list";
     }
@@ -97,7 +97,13 @@ public class CourseController {
     @GetMapping(
             value = "/create"
     )
-    public String createCourse(Model model){
+    @PreAuthorize("hasAnyAuthority('Admin','Instructor')")
+    public String createCourse(Model model, Principal principal) {
+        if (userService.doseCurrentUserHasRole("Instructor")) {
+            Instructor instructor =
+                    instructorService.loadInstructorByEmail(principal.getName());
+            model.addAttribute(CURRENT_INSTRUCTOR, instructor);
+        }
         List<Instructor> instructors = instructorService.fetchInstructor();
         model.addAttribute(LIST_INSTRUCTORS, instructors);
         model.addAttribute(COURSE, new Course());
@@ -108,15 +114,21 @@ public class CourseController {
     @GetMapping(
             value = "/list/student"
     )
-    public String couresForCurrentStudent(Model model){
+    @PreAuthorize("hasAuthority('Student')")
+    public String couresForCurrentStudent(Model model, Principal principal) {
+        User user =
+                userService.loadUserByEmail(principal.getName());
 
-        Long studentId = 1L;// current student
-        List<Course> subscribedCourses = courseService.fetchCoursesForStudent(studentId);
+        List<Course> subscribedCourses = courseService.fetchCoursesForStudent(
+                user.getStudent().getStudentId()
+        );
         List<Course> otherCourses = courseService.fetchAllCourses().stream()
                 .filter(course -> !subscribedCourses.contains(course))
                 .collect(Collectors.toList());
         model.addAttribute(LIST_COURSES, subscribedCourses);
         model.addAttribute(OTHER_COURSES, otherCourses);
+        model.addAttribute(FIRST_NAME, user.getStudent().getFirstName());
+        model.addAttribute(LAST_NAME, user.getStudent().getLastName());
 
         return "course_views/student_courses";
     }
@@ -124,9 +136,11 @@ public class CourseController {
     @GetMapping(
             value = "/enrollStudent"
     )
-    public String enrollCurrentStudentInCourse(Long courseId){
-        Long studentId = 1L;
-        courseService.assignStudentToCourse(courseId, studentId);
+    @PreAuthorize("hasAuthority('Student')")
+    public String enrollCurrentStudentInCourse(Long courseId, Principal principal) {
+        User user =
+                userService.loadUserByEmail(principal.getName());
+        courseService.assignStudentToCourse(courseId, user.getStudent().getStudentId());
         return "redirect:/courses/list/student";
     }
 
@@ -134,7 +148,7 @@ public class CourseController {
             value = "/list/instructor"
     )
     @PreAuthorize("hasAuthority('Instructor')")
-    public String coursesForCurrentInstructor(Model model, Principal principal){
+    public String coursesForCurrentInstructor(Model model, Principal principal) {
         User user = userService.loadUserByEmail(principal.getName());
         Instructor instructor = instructorService.loadInstructorById(
                 user.getInstructor().getInstructorId()
@@ -149,10 +163,13 @@ public class CourseController {
     @GetMapping(
             value = "/instructor"
     )
-    public String coursesByInstructorId(Model model, Long instructorId){
+    @PreAuthorize("hasAuthority('Admin')")
+    public String coursesByInstructorId(Model model, Long instructorId) {
 
         Instructor instructor = instructorService.loadInstructorById(instructorId);
         model.addAttribute(LIST_COURSES, instructor.getCourses());
+        model.addAttribute(FIRST_NAME, instructor.getFirstName());
+        model.addAttribute(LAST_NAME, instructor.getLastName());
 
         return "course_views/instrucor_courses";
     }
