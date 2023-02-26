@@ -10,5 +10,5 @@ public interface UserService {
 
     void assignRoleToUser(String email, String roleName);
 
-
+    boolean doseCurrentUserHasRole(String roleName);
 }

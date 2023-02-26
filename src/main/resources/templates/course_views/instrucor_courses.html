@@ -35,7 +35,7 @@
                         <td th:text="${course.getStudents().size()}"></td>
                         <td>
                             <a class="btn btn-success"
-                               th:href="@{/courses/formUpdate(courseId=${course.getCourseId()})}">
+                               th:href="@{/courses/update(courseId=${course.getCourseId()})}">
                                 Update
                             </a>
                         </td>

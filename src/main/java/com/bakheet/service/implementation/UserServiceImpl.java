@@ -5,6 +5,7 @@ import com.bakheet.dao.UserDao;
 import com.bakheet.entiy.Role;
 import com.bakheet.entiy.User;
 import com.bakheet.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,20 @@ public class UserServiceImpl implements UserService {
         Role role =
                 roleDao.findByName(roleName);
         user.assignRoleToUser(role);
+    }
+
+    @Override
+    public boolean doseCurrentUserHasRole(String roleName) {
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .anyMatch(
+                        grantedAuthority -> grantedAuthority
+                                .getAuthority()
+                                .equals(roleName)
+                );
+
     }
 }

@@ -18,25 +18,18 @@ public class SecurityConfiguration {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)throws Exception {
-        httpSecurity.formLogin();
-        httpSecurity.authorizeRequests()
-                        .antMatchers("/")
-                                .permitAll();
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.formLogin();
+        http.authorizeRequests().antMatchers("/").permitAll();
 
-        httpSecurity.exceptionHandling()
-                        .accessDeniedPage("/403");
-
-        httpSecurity.authorizeRequests()
-                .anyRequest()
-                .authenticated();
-
-        return httpSecurity.build();
+        http.authorizeRequests().anyRequest().authenticated();
+        http.exceptionHandling().accessDeniedPage("/403");
+        return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
-        return authenticationConfiguration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
 

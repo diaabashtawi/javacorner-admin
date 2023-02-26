@@ -5,6 +5,8 @@ import com.bakheet.entiy.Course;
 import com.bakheet.entiy.Instructor;
 import com.bakheet.service.CourseService;
 import com.bakheet.service.InstructorService;
+import com.bakheet.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,14 +30,18 @@ public class CourseController {
 
     private InstructorService instructorService;
 
-    public CourseController(CourseService courseService, InstructorService instructorService) {
+    private UserService userService;
+
+    public CourseController(CourseService courseService, InstructorService instructorService, UserService userService) {
         this.courseService = courseService;
         this.instructorService = instructorService;
+        this.userService = userService;
     }
 
     @GetMapping(
             value = "/list"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String viewCourses(
             Model model,
             @RequestParam(name = KEYWORD, defaultValue = "") String keyword){
@@ -50,6 +57,7 @@ public class CourseController {
     @GetMapping(
             value = "/delete"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String deleteCourse(Long courseId, String keyword){
         courseService.removeCourse(courseId);
         return "redirect:/courses/list?keyword=" + keyword;
@@ -58,12 +66,21 @@ public class CourseController {
     @GetMapping(
             value = "/update"
     )
-    public String updateCourse(Model model, Long courseId){
+    @PreAuthorize("hasAnyAuthority('Admin','Instructor')")
+    public String updateCourse(Model model, Long courseId, Principal principal){
+
+        if (userService.doseCurrentUserHasRole("Instructor")){
+            Instructor instructor =
+                    instructorService.loadInstructorByEmail(principal.getName());
+            model.addAttribute(CURRENT_INSTRUCTOR, instructor);
+        }
+
         Course course = courseService.loadCourseById(courseId);
         List<Instructor> instructors = instructorService.fetchInstructor();
 
         model.addAttribute(COURSE, course);
         model.addAttribute(LIST_INSTRUCTORS, instructors);
+
         return "course_views/update";
     }
 
@@ -72,7 +89,7 @@ public class CourseController {
     )
     public String saveCourse(Course course){
         courseService.createOrUpdateCourse(course);
-        return "redirect:/courses/list";
+        return userService.doseCurrentUserHasRole("Instructor") ? "redirect:/courses/list/instructor" : "redirect:/courses/list";
     }
 
     @GetMapping(

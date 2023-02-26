@@ -10,6 +10,7 @@ public final class AppConstants {
     public static final String LIST_STUDENTS = "listStudents";
     public static final String STUDENT = "student";
     public static final String KEYWORD = "keyword";
+    public static final String CURRENT_INSTRUCTOR = "currentInstructor";
 
 
 }
