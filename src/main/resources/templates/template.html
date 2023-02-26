@@ -52,6 +52,11 @@
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" sec:authorize="hasAuthority('Student')" th:href="@{/student/update}">
+                                Update Profile
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" th:href="@{/logout}">Logout</a>
                         </li>
                     </ul>

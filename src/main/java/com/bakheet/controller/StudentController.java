@@ -4,6 +4,7 @@ import com.bakheet.entiy.Student;
 import com.bakheet.entiy.User;
 import com.bakheet.service.StudentService;
 import com.bakheet.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 import static com.bakheet.constants.AppConstants.*;
@@ -34,6 +36,7 @@ public class StudentController {
     @GetMapping(
             value = "/list"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String studentList(Model model, @RequestParam(name = KEYWORD, defaultValue = "") String keyword){
         List<Student> students = studentService.findStudentsByName(keyword);
         model.addAttribute(LIST_STUDENTS, students);
@@ -45,6 +48,7 @@ public class StudentController {
     @GetMapping(
             value = "/delete"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String deleteStudent(Long studentId, String keyword){
         studentService.removeStudent(studentId);
         return "redirect:/student/list?keyword=" + keyword;
@@ -53,8 +57,9 @@ public class StudentController {
     @GetMapping(
             value = "/update"
     )
-    public String updateStudent(Model model, Long studentId){
-        Student student = studentService.loadStudentById(studentId);
+    @PreAuthorize("hasAuthority('Student')")
+    public String updateStudent(Model model, Principal principal){
+        Student student = studentService.loadStudentByEmail(principal.getName());
         model.addAttribute(STUDENT, student);
         return "student_views/update";
     }
@@ -64,12 +69,13 @@ public class StudentController {
     )
     public String editStudent(Student student){
         studentService.updateStudent(student);
-        return "redirect:/student/list";
+        return "redirect:/courses/list/student";
     }
 
     @GetMapping(
             value = "/create"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String createStudent(Model model){
         model.addAttribute(STUDENT, new Student());
         return "student_views/create";
@@ -78,6 +84,7 @@ public class StudentController {
     @PostMapping(
             value = "/save"
     )
+    @PreAuthorize("hasAuthority('Admin')")
     public String saveStudent(Student student, BindingResult bindingResult){
         User user = userService.loadUserByEmail(student.getUser().getEmail());
         if (user != null)
