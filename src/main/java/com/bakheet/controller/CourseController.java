@@ -3,6 +3,7 @@ package com.bakheet.controller;
 
 import com.bakheet.entiy.Course;
 import com.bakheet.entiy.Instructor;
+import com.bakheet.entiy.User;
 import com.bakheet.service.CourseService;
 import com.bakheet.service.InstructorService;
 import com.bakheet.service.UserService;
@@ -87,6 +88,7 @@ public class CourseController {
     @PostMapping(
             value = "/edit"
     )
+    @PreAuthorize("hasAnyAuthority('Admin','Instructor')")
     public String saveCourse(Course course){
         courseService.createOrUpdateCourse(course);
         return userService.doseCurrentUserHasRole("Instructor") ? "redirect:/courses/list/instructor" : "redirect:/courses/list";
@@ -131,10 +133,15 @@ public class CourseController {
     @GetMapping(
             value = "/list/instructor"
     )
-    public String coursesForCurrentInstructor(Model model){
-        Long instructorId = 1L;
-        Instructor instructor = instructorService.loadInstructorById(instructorId);
+    @PreAuthorize("hasAuthority('Instructor')")
+    public String coursesForCurrentInstructor(Model model, Principal principal){
+        User user = userService.loadUserByEmail(principal.getName());
+        Instructor instructor = instructorService.loadInstructorById(
+                user.getInstructor().getInstructorId()
+        );
         model.addAttribute(LIST_COURSES, instructor.getCourses());
+        model.addAttribute(FIRST_NAME, instructor.getFirstName());
+        model.addAttribute(LAST_NAME, instructor.getLastName());
 
         return "course_views/instrucor_courses";
     }
